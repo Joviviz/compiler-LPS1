@@ -112,7 +112,7 @@ public class Compilador {
         lerProximoToken();
         return numero;
     }
-    
+
 
     // LER COMPARACAO E OPERADORES
     public String getComparacao(){
@@ -122,18 +122,18 @@ public class Compilador {
         return variavel + " " + operador + " " + valor;
     }
     private String getOperador() {
-        char op = lookahead;
-        if (op == '=') {
+        char operador = lookahead;
+        if (operador == '=') {
             match('=');
             return "==";
-        } else if (op == '<') {
+        } else if (operador == '<') {
             match('<');
             return "<";
-        } else if (op == '#') {
+        } else if (operador == '#') {
             match('#');
             return "!=";
         } else {
-            throw new RuntimeException("Operador invalido: '" + op + "'");
+            throw new RuntimeException("Operador invalido: '" + operador + "'");
         }
     }
 
@@ -149,8 +149,87 @@ public class Compilador {
     private void comandoLer(){
         match('G');
         char variavel = getVariavel();
-        
+        System.out.println("{ gets(str); }");
+        System.out.println("sscanf(str, \"%d\", &" + variavel + " );");
     }
+    
+    // Comandos de matematica basica
+    private void comandoSomar(){
+        match('+');
+        char variavel = getVariavel();
+        String valor_1 = getValor();
+        String valor_2 = getValor();
+        System.out.println(variavel + " = " + valor_1 + " + " + valor_2 + ";");
+    }
+    private void comandoSubtrair(){
+        match('-');
+        char variavel = getVariavel();
+        String valor_1 = getValor();
+        String valor_2 = getValor();
+        System.out.println(variavel + " = " + valor_1 + " - " + valor_2 + ";");
+    }
+    private void comandoMultiplicar(){
+        match('*');
+        char variavel = getVariavel();
+        String valor_1 = getValor();
+        String valor_2 = getValor();
+        System.out.println(variavel + " = " + valor_1 + " * " + valor_2 + ";");
+    }
+    private void comandoDividir(){
+        match('/');
+        char variavel = getVariavel();
+        String valor_1 = getValor();
+        String valor_2 = getValor();
+        System.out.println(variavel + " = " + valor_1 + " / " + valor_2 + ";");
+    }
+    private void comandoModulo(){
+        match('%');
+        char variavel = getVariavel();
+        String valor_1 = getValor();
+        String valor_2 = getValor();
+        System.out.println(variavel + " = " + valor_1 + " % " + valor_2 + ";");
+    }
+
+    // COMANDOS DIVERSOS
+    // PrintCommand
+    private void comandoPrint(){
+        match('P');
+        String valor = getValor();
+        System.out.println("printf(\"%d\\n\", " + valor + ");");
+    }
+    // IfCommand
+    private void comandoIf(){
+        match('I');
+        String condicao = getComparacao();
+        System.out.println("if( " + condicao + " ) {");
+
+        // rodar o comando dentro do if
+        comandos();
+
+        System.out.println("}");
+    }
+    // WhileCommand
+    private void comandoWhile(){
+        match('W');
+        String condicao = getComparacao();
+        System.out.println("while ( " + condicao + "){");
+
+        //rodar o comando dentro do while
+        comandos();
+        System.out.println("}");
+    }
+    // CompositeCommand
+    private void comandoComposite(){
+        match('{');
+        while (lookahead != '}'){
+            // colocar o maximo de comandos ate fechar a chave
+            comandos();
+            if (lookahead == '\0') {
+                throw new RuntimeException("Erro: '}' esperado antes do fim da entrada.");
+            }
+        }
+    }
+
 
     private void comandos() {
         switch (lookahead){
