@@ -286,7 +286,8 @@ public class Compilador {
     }
 
     public static void main(String[] args) {
-        String exemplo1 = "G n"
+        String exemplo1 = 
+                  "G n"
                 + "G p"
                 + "= i 0"
                 + "W i # n {"
@@ -294,7 +295,8 @@ public class Compilador {
                 + "  P a"
                 + "  + i i 1"
                 + "}";
-        String exemplo2 = "G n"
+        String exemplo2 = 
+                  "G n"
                 + "= i 2"
                 + "% a n i"
                 + "W i < n {"
