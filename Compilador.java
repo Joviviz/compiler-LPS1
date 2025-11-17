@@ -233,8 +233,87 @@ public class Compilador {
 
     private void comandos() {
         switch (lookahead){
+            case '=':
+                comandoAtribuir();
+                break;
+            case 'G':
+                comandoLer();
+                break;
+            case '+':
+                comandoSomar();
+                break;
+            case '-':
+                comandoSubtrair();
+                break;
+            case '*':
+                comandoMultiplicar();
+                break;
+            case '/':
+                comandoDividir();
+                break;
+            case '%':
+                comandoModulo();
+                break;
+            case 'P':
+                comandoPrint();
+                break;
+            case 'I':
+                comandoIf();
+                break;
+            case 'W':
+                comandoWhile();
+                break;
+            case '{':
+                comandoComposite();
+                break;
+            default:
+                // Se o lookahead não for nulo, mas não for um comando, é um erro.
+                if (lookahead != '\0') {
+                    throw new RuntimeException("Comando inexistente: '" + lookahead + "'");
+                }
+
         }
     }
 
+    public static void main(String[] args) {
+        String exemplo1 =
+              "G n"
+            + "G p"
+            + "= i 0"
+            + "W i # n {"
+            + "  * a p i"
+            + "  P a"
+            + "  + i i 1"
+            + "}";
+        String exemplo2 =
+              "G n"
+            + "= i 2"
+            + "% a n i"
+            + "W i < n {"
+            + "  I a = 0 = i n"
+            + "  + i i 1"
+            + "  % a n i"
+            + "}"
+            + "I a = 0 P 0"
+            + "I a # 0 P 1";
 
+        System.out.println("--- INICIO PARTE (A): EXEMPLO 1 ---");
+        try {
+            Compilador compilador1 = new Compilador(exemplo1);
+            compilador1.compilar();
+        } catch (Exception e) {
+            System.err.println("Erro ao compilar Exemplo 1: " + e.getMessage());
+        }
+        System.out.println("--- FIM PARTE (A): EXEMPLO 1 ---\n");
+
+        
+        System.out.println("--- INICIO PARTE (A): EXEMPLO 2 ---");
+        try {
+            Compilador compilador2 = new Compilador(exemplo2);
+            compilador2.compilar();
+        } catch (Exception e) {
+            System.err.println("Erro ao compilar Exemplo 2: " + e.getMessage());
+        }
+        System.out.println("--- FIM PARTE (A): EXEMPLO 2 ---");
+    }
 }
