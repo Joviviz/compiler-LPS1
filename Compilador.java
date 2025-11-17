@@ -41,7 +41,7 @@ public class Compilador {
     }
 
     // Tokenizar a entrada
-    private void tokenizar(){
+    private void lerProximoToken(){
         // pula espacos em branco
         while (index < input.length() - 1 && Character.isWhitespace(lookahead)) {
             index++;
@@ -70,7 +70,7 @@ public class Compilador {
     // verificar se o char bate com o lookahead
     private void match(char expected){
         if (lookahead == expected) {
-            tokenizar();
+            lerProximoToken();
         } else {
             throw new RuntimeException("Erro de sintaxe: esperado '" + expected + "', mas encontrado '" + lookahead + "'");
         }
@@ -79,6 +79,61 @@ public class Compilador {
     private void aParteDoMeioPrograma() {
         while (lookahead != '\0') {
             comandos();
+        }
+    }
+
+
+    // VALOR VARIAVEL E NUMERO
+    private String getValor(){
+        if (Character.isLowerCase(lookahead)) {
+            return String.valueOf(getVariavel());
+        } else if (Character.isDigit(lookahead)){
+            return String.valueOf(getNumero());
+        } else {
+            throw new RuntimeException("Erro de sintaxe: Numero ou Variavel esperado, mas encontrado '" + lookahead + "'");
+        }
+    }
+
+    private char getVariavel(){
+        if (!Character.isLowerCase(lookahead)) {
+            throw new RuntimeException("Variavel (letra minuscula) esperada, mas encontrado '" + lookahead + "'");
+        }
+        char variavel = lookahead;
+        lerProximoToken();
+        return variavel;
+     
+    }
+
+    private char getNumero(){
+        if (!Character.isDigit(lookahead)) {
+            throw new RuntimeException("Numero esperado, mas encontrado '" + lookahead + "'");
+        }
+        char numero = lookahead;
+        lerProximoToken();
+        return numero;
+    }
+    
+
+    // LER COMPARACAO E OPERADORES
+    public String getComparacao(){
+        char variavel = getVariavel();
+        String operador = getOperador();
+        String valor = getValor();
+        return variavel + " " + operador + " " + valor;
+    }
+    private String getOperador() {
+        char op = lookahead;
+        if (op == '=') {
+            match('=');
+            return "==";
+        } else if (op == '<') {
+            match('<');
+            return "<";
+        } else if (op == '#') {
+            match('#');
+            return "!=";
+        } else {
+            throw new RuntimeException("Operador invalido: '" + op + "'");
         }
     }
 
