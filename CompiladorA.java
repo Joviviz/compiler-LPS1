@@ -1,12 +1,17 @@
 import java.util.Objects;
 
-public class Compilador {
+/*
+ * Compilador A
+ * Imprime o Codigo em C diretamente durante a analise
+ */ 
+
+public class CompiladorA {
     private String input;
     private int index;
     // Olhar adiantado para o proximo caractere a ser processado
     private char lookahead;
 
-    public Compilador(String input) {
+    public CompiladorA(String input) {
         // Normaliza o input removendo espaços em branco desnecessarios e garantindo que
         // nao seja nulo
         this.input = Objects.requireNonNull(input).trim();
@@ -308,7 +313,7 @@ public class Compilador {
 
         System.out.println("=== INICIO EXEMPLO 1 ===");
         try {
-            Compilador compilador1 = new Compilador(exemplo1);
+            CompiladorA compilador1 = new CompiladorA(exemplo1);
             compilador1.compilar();
         } catch (Exception e) {
             System.err.println("Erro ao compilar Exemplo 1: " + e.getMessage());
@@ -317,7 +322,7 @@ public class Compilador {
 
         System.out.println("=== INICIO EXEMPLO 2 ===");
         try {
-            Compilador compilador2 = new Compilador(exemplo2);
+            CompiladorA compilador2 = new CompiladorA(exemplo2);
             compilador2.compilar();
         } catch (Exception e) {
             System.err.println("Erro ao compilar Exemplo 2: " + e.getMessage());
