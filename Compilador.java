@@ -3,11 +3,11 @@ import java.util.Objects;
 public class Compilador {
     private String input;
     private int index;
-    // Olhar adiantado para o próximo caractere a ser processado
+    // Olhar adiantado para o proximo caractere a ser processado
     private char lookahead;
 
     public Compilador(String input) {
-        // Normaliza o input removendo espaços em branco desnecessários e garantindo que
+        // Normaliza o input removendo espaços em branco desnecessarios e garantindo que
         // nao seja nulo
         this.input = Objects.requireNonNull(input).trim();
 
@@ -113,7 +113,6 @@ public class Compilador {
         lerProximoToken();
         return numero;
     }
-
     // LER COMPARACAO E OPERADORES
     public String getComparacao() {
         char variavel = getVariavel();
@@ -277,7 +276,7 @@ public class Compilador {
                 comandoComposite();
                 break;
             default:
-                // Se o lookahead não for nulo, mas não for um comando, é um erro.
+                // Se o lookahead nao for nulo, mas não for um comando, eh um erro.
                 if (lookahead != '\0') {
                     throw new RuntimeException("Comando inexistente: '" + lookahead + "'");
                 }
