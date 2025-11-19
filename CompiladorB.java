@@ -4,7 +4,7 @@ import java.util.List;
 
 /*
  * Em vez de imprimir o codigo C diretamente durante a analise,
- * este compilador constrói uma Árvore Sintática Abstrata em memoria.
+ * este compilador constroi uma Arvore Sintatica Abstrata em memoria.
  * A geracao de codigo ocorre apenas DEPOIS que a arvore esta pronta
  */
 
@@ -67,7 +67,69 @@ public class CompiladorB {
         }
     }
 
-    static class 
+    static class ComandoCalculo implements No{
+        char variavel;
+        String valor1;
+        String valor2;
+        char operacao;
+
+        public ComandoCalculo(char variavel, String valor1, String valor2, char operacao){
+            this.variavel = variavel;
+            this.valor1 = valor1;
+            this.valor2 = valor2;
+            this.operacao = operacao;
+        }
+
+        public void gerarC(String prefixo){
+            System.out.println(prefixo + variavel + "=" + valor1 + operacao + valor2 + ";");
+        }
+    }
+
+    static class ComandoPrint implements No{
+        String valor;
+
+        public ComandoPrint(String valor){
+            this.valor = valor;
+        }
+
+        public void gerarC(String prefixo){
+            System.out.println(prefixo + "printf(\"%d\\n\", " + valor + ");");
+        }
+    }
+
+    static class ComandoIf implements No{
+        String condicao;
+
+        public ComandoIf(String condicao){
+            this.condicao = condicao;
+        }
+
+        public void gerarC(String prefixo){
+            System.out.println(prefixo + "if ( " + condicao + " ) {" );
+            System.out.println(prefixo + "}" );
+        }
+    }
+
+    static class ComandoWhile implements No{
+        String condicao;
+
+        public ComandoWhile(String condicao){
+            this.condicao = condicao;
+        }
+
+        public void gerarC(String prefixo){
+            System.out.println(prefixo + "while ( " + condicao + " ) {" );
+            System.out.println(prefixo + "}" );
+        }
+    }
+
+    static class ComandoComposite implements No{
+
+        public void gerarC(String prefixo){
+        }
+    }
+
+
 
 
     public static void main(String[] args) {
