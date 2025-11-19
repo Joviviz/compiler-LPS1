@@ -175,7 +175,7 @@ public class CompiladorA {
         String valor_1 = getValor();
         String valor_2 = getValor();
         System.out.println(variavel + " = " + valor_1 + " - " + valor_2 + ";");
-    }
+ }
 
     private void comandoMultiplicar() {
         match('*');
