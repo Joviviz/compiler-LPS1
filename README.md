@@ -22,6 +22,9 @@ Para cada regra da gramática da LPS1 (definida no TCD), existe um método Java 
 ### Parte B
 Nesta versão, o foco é a construção da **ASA (Árvore Sintática Abstrata)**.
 
+1.  O analisador lê o código e cria objetos (Nós) representando a estrutura do programa.
+2.  Nenhum código é impresso durante a leitura.
+3.  Apenas após a árvore estar completa, o método `gerarC()` percorre a estrutura e imprime o código final.
 
 ## Como Rodar os Compiladores
 
@@ -68,3 +71,4 @@ O método `main` de ambos compiladores já está configurado para executar os do
 - [A Simple Recursive Descent Parser](https://math.hws.edu/javanotes/c9/s5.html)
 - [Análise Sintática Ascendente PDF](https://erinaldosn.wordpress.com/wp-content/uploads/2012/05/anc3a1lise-sintc3a1tica-ascendente.pdf)
 - [Compiladores - Aula 13 - Análise Sintática Ascendente](https://youtu.be/U5TlpXnwCgA)
+= [YACC for Java](https://byaccj.sourceforge.net/)

@@ -311,22 +311,22 @@ public class CompiladorA {
                 + "I a = 0 P 0"
                 + "I a # 0 P 1";
 
-        System.out.println("=== INICIO EXEMPLO 1 ===");
+        System.out.println("=== INICIO EXEMPLO 1 (A) ===");
         try {
             CompiladorA compilador1 = new CompiladorA(exemplo1);
             compilador1.compilar();
         } catch (Exception e) {
-            System.err.println("Erro ao compilar Exemplo 1: " + e.getMessage());
+            System.err.println("Erro ao compilar Exemplo 1 (A): " + e.getMessage());
         }
-        System.out.println("=== FIM EXEMPLO 1 ===\n");
+        System.out.println("=== FIM EXEMPLO 1 (A) ===\n");
 
-        System.out.println("=== INICIO EXEMPLO 2 ===");
+        System.out.println("=== INICIO EXEMPLO 2 (A) ===");
         try {
             CompiladorA compilador2 = new CompiladorA(exemplo2);
             compilador2.compilar();
         } catch (Exception e) {
-            System.err.println("Erro ao compilar Exemplo 2: " + e.getMessage());
+            System.err.println("Erro ao compilar Exemplo 2 (A): " + e.getMessage());
         }
-        System.out.println("=== FIM EXEMPLO 2 ===");
+        System.out.println("=== FIM EXEMPLO 2 (A) ===");
     }
 }
