@@ -29,8 +29,7 @@ public class CompiladorB {
         this.lookahead = this.input.charAt(0);
     }
 
-
-    public void compilar(){
+    public void compilar() {
         // controu a arvore
         Programa arvore = programa();
 
@@ -40,18 +39,22 @@ public class CompiladorB {
 
     private void lerProximoToken() {
         while (index < input.length() - 1 && Character.isWhitespace(lookahead)) {
-            index++; lookahead = input.charAt(index);
+            index++;
+            lookahead = input.charAt(index);
         }
         if (index < input.length() - 1) {
-            index++; lookahead = input.charAt(index);
+            index++;
+            lookahead = input.charAt(index);
         } else {
             lookahead = '\0';
         }
         while (lookahead != '\0' && Character.isWhitespace(lookahead)) {
             if (index < input.length() - 1) {
-                index++; lookahead = input.charAt(index);
+                index++;
+                lookahead = input.charAt(index);
             } else {
-                lookahead = '\0'; break;
+                lookahead = '\0';
+                break;
             }
         }
     }
@@ -65,30 +68,43 @@ public class CompiladorB {
     }
 
     private char getVariavel() {
-        if (!Character.isLowerCase(lookahead)) throw new RuntimeException("Variavel esperada");
+        if (!Character.isLowerCase(lookahead))
+            throw new RuntimeException("Variavel esperada");
         char variavel = lookahead;
         lerProximoToken();
         return variavel;
     }
 
     private char getNumero() {
-        if (!Character.isDigit(lookahead)) throw new RuntimeException("Numero esperado");
+        if (!Character.isDigit(lookahead))
+            throw new RuntimeException("Numero esperado");
         char numero = lookahead;
         lerProximoToken();
         return numero;
     }
 
     private String getValor() {
-        if (Character.isLowerCase(lookahead)) return String.valueOf(getVariavel());
-        if (Character.isDigit(lookahead)) return String.valueOf(getNumero());
+        if (Character.isLowerCase(lookahead))
+            return String.valueOf(getVariavel());
+        if (Character.isDigit(lookahead))
+            return String.valueOf(getNumero());
         throw new RuntimeException("Valor invalido");
     }
 
     private String getOperador() {
         char operador = lookahead;
-        if (operador == '=') { match('='); return "=="; }
-        if (operador == '<') { match('<'); return "<"; }
-        if (operador == '#') { match('#'); return "!="; }
+        if (operador == '=') {
+            match('=');
+            return "==";
+        }
+        if (operador == '<') {
+            match('<');
+            return "<";
+        }
+        if (operador == '#') {
+            match('#');
+            return "!=";
+        }
         throw new RuntimeException("Operador invalido");
     }
 
@@ -98,7 +114,6 @@ public class CompiladorB {
         String valor = getValor();
         return variavel + " " + operador + " " + valor;
     }
-
 
     // Comandos da Arvore
     private No comandoAtribuir() {
@@ -131,13 +146,16 @@ public class CompiladorB {
     private No comandoIf() {
         match('I');
         String condicao = getComparacao();
-        return new ComandoIf(condicao);
+
+        No filho = comando();
+        return new ComandoIf(condicao, filho);
     }
 
     private No comandoWhile() {
         match('W');
         String condicao = getComparacao();
-        return new ComandoWhile(condicao);
+        No filho = comando();
+        return new ComandoWhile(condicao, filho);
     }
 
     private No comandoComposite() {
@@ -145,7 +163,8 @@ public class CompiladorB {
         ComandoComposite bloco = new ComandoComposite();
         while (lookahead != '}') {
             bloco.listaComandos.add(comando());
-            if (lookahead == '\0') throw new RuntimeException("Fim inesperado dentro de bloco");
+            if (lookahead == '\0')
+                throw new RuntimeException("Fim inesperado dentro de bloco");
         }
         match('}');
         return bloco;
@@ -161,17 +180,28 @@ public class CompiladorB {
 
     private No comando() {
         switch (lookahead) {
-            case '=': return comandoAtribuir();
-            case 'G': return comandoLer();
-            case 'P': return comandoPrint();
-            case '+': return comandoCalculo('+');
-            case '-': return comandoCalculo('-');
-            case '*': return comandoCalculo('*');
-            case '/': return comandoCalculo('/');
-            case '%': return comandoCalculo('%');
-            case 'I': return comandoIf();
-            case 'W': return comandoWhile();
-            case '{': return comandoComposite();
+            case '=':
+                return comandoAtribuir();
+            case 'G':
+                return comandoLer();
+            case 'P':
+                return comandoPrint();
+            case '+':
+                return comandoCalculo('+');
+            case '-':
+                return comandoCalculo('-');
+            case '*':
+                return comandoCalculo('*');
+            case '/':
+                return comandoCalculo('/');
+            case '%':
+                return comandoCalculo('%');
+            case 'I':
+                return comandoIf();
+            case 'W':
+                return comandoWhile();
+            case '{':
+                return comandoComposite();
             default:
                 throw new RuntimeException("Comando desconhecido: " + lookahead);
         }
@@ -215,7 +245,7 @@ public class CompiladorB {
         }
 
         public void gerarC(String prefixo) {
-            System.out.println(prefixo + variavel + " = " + ";");
+            System.out.println(prefixo + variavel + " = " + valor + ";");
         }
     }
 
@@ -227,10 +257,9 @@ public class CompiladorB {
         }
 
         public void gerarC(String prefixo) {
-            System.out.println(prefixo + "{");
-            System.out.println(prefixo + "    gets(str);");
+            System.out.println(prefixo + "    { gets(str);");
             System.out.println(prefixo + "    sscanf(str, \"%d\", &" + variavel + ");");
-            System.out.println(prefixo + "}");
+            System.out.println(prefixo + "    }");
         }
     }
 
@@ -248,7 +277,7 @@ public class CompiladorB {
         }
 
         public void gerarC(String prefixo) {
-            System.out.println(prefixo + variavel + "=" + valor1 + operacao + valor2 + ";");
+            System.out.println(prefixo + variavel + " = " + valor1 + " " + operacao + " " + valor2 + ";");
         }
     }
 
@@ -266,27 +295,34 @@ public class CompiladorB {
 
     static class ComandoIf implements No {
         String condicao;
+        No filho;
 
-        public ComandoIf(String condicao) {
+        public ComandoIf(String condicao, No filho) {
             this.condicao = condicao;
+            this.filho = filho;
         }
 
         public void gerarC(String prefixo) {
             System.out.println(prefixo + "if ( " + condicao + " ) {");
+            filho.gerarC(prefixo + "    ");
             System.out.println(prefixo + "}");
         }
     }
 
     static class ComandoWhile implements No {
         String condicao;
+        No filho;
 
-        public ComandoWhile(String condicao) {
+        public ComandoWhile(String condicao, No filho) {
             this.condicao = condicao;
+            this.filho = filho;
+
         }
 
         public void gerarC(String prefixo) {
             System.out.println(prefixo + "while ( " + condicao + " ) {");
-            System.out.println(prefixo + "}");
+            filho.gerarC(prefixo + "    ");
+            System.out.println(prefixo + "    }");
         }
     }
 
